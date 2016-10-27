@@ -1,0 +1,28 @@
+Source: netbeans-installer
+Maintainer: Fabrizio Martinez <WiggyWunka@gmail.com>
+Section: devel
+Priority: optional
+Standards-Version: 3.9.4
+Build-Depends: debhelper (>= 9)
+
+Package: netbeans-installer
+Architecture: all
+Pre-Depends: wget, binutils, debconf (>= 0.5) | debconf-2.0
+Depends: ${misc:Depends}
+Conflicts: 
+Replaces: 
+Provides: netbeans-ide
+Section: devel
+Priority: optional
+Homepage: http://netbeans.org/
+Description: Extensible Java IDE
+ Integrated Development Environment for software developers. It supports
+ development of desktop, enterprise, web, and mobile applications. Package
+ includes the Base IDE, Java/JavaEE Development Tools, Plug-in Development
+ Tools, PHP, HTML, and C/C++.
+ .
+ Note that this is an empty package, which only contains a script to
+ download and install the Netbeans IDE from the OS independent zip.
+ All information regarding Netbeans IDE itself can be found on this website:
+ http://www.netbeans.org/
+

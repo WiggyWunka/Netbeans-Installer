@@ -1,0 +1,22 @@
+#!/bin/sh
+
+set -e
+
+. /usr/share/debconf/confmodule
+
+### Variables
+NAME=netbeans
+INSTALL_DIR=/opt/${NAME}
+
+case "$1" in
+	purge|remove|abort-install)
+		rm -Rf $INSTALL_DIR
+		db_purge
+	;;
+esac
+
+#DEBHELPER#
+
+exit 0
+
+# vim: ts=2 sw=2

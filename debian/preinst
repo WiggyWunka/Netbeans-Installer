@@ -1,0 +1,89 @@
+#!/bin/sh
+#Updated by WiggyWunka <wiggywunka@gmail.com>
+#Copyright 2012 Bruce.Ingalls at gmail & Alin Andrei <webupd8@gmail.com>
+#GPL v3 Affero license at http://www.gnu.org/
+
+set -e
+
+. /usr/share/debconf/confmodule
+
+### Variables
+# Modify these variables to update the package
+BUILD=201609300101
+VERSION=8.2
+NAME=netbeans
+PACKAGE_NAME=${NAME}-installer
+
+# Folders
+INSTALL_DIR=/opt/${NAME}
+TMP_DIR=/var/cache/${PACKAGE_NAME}
+
+# Filenames and checksums
+CHECKSUM="9a13fb5e1904f710de764fe56c3c5569"
+CHECKSUM_COMMAND="md5sum"
+FILENAME=${NAME}-${VERSION}-${BUILD}.zip
+UNPACK_COMMAND="unzip -q"
+
+# Download URL
+PARTNER_URL="http://download.netbeans.org/${NAME}/${VERSION}/final/zip/${FILENAME}"
+
+### Functions
+fp_exit_with_error() {
+	echo $1
+	echo "${NAME} is NOT installed."
+	exit 1
+}
+
+fp_download_and_unpack() {
+	cd ${TMP_DIR}
+	# use apt proxy
+	APT_PROXIES=$(apt-config shell \
+	http_proxy Acquire::http::Proxy \
+	https_proxy Acquire::https::Proxy \
+	ftp_proxy Acquire::ftp::Proxy \
+	dl_direct Acquire::http::Proxy::download.oracle.com \
+	)
+
+	[ -n "$APT_PROXIES" ] && eval export $APT_PROXIES
+
+	# setting wget options
+	:> wgetrc
+	echo "noclobber = off" >> wgetrc
+	echo "dir_prefix = ." >> wgetrc
+	echo "dirstruct = off" >> wgetrc
+	echo "tries = 2" >> wgetrc
+
+	# downloading
+	echo "Downloading ${NAME}..."
+	WGETRC=wgetrc wget --continue --no-check-certificate -O $FILENAME --header "Cookie: gpw_e24=h" $PARTNER_URL \
+		|| fp_exit_with_error "download failed"
+	echo "Download done."
+
+	# Verify MD5 checksum of (copied or downloaded) archive
+	echo "Verifying ${CHECKSUM_COMMAND}..."
+	echo "$CHECKSUM  $FILENAME" | $CHECKSUM_COMMAND -c > /dev/null 2>&1 \
+		|| fp_exit_with_error "${CHECKSUM_COMMAND} mismatch $FILENAME"
+
+	# Unpacking
+	echo "Unpacking downloaded archive..."
+	$UNPACK_COMMAND $FILENAME || fp_exit_with_error "cannot unpack ${NAME}"
+}
+
+### Main
+# Create dirs
+mkdir -p ${TMP_DIR}
+
+fp_download_and_unpack
+
+# Copy to the final dir
+rm -rf ${INSTALL_DIR}
+cp -rf ${TMP_DIR}/${NAME} ${INSTALL_DIR}
+
+# Clean up
+rm -rf ${TMP_DIR}
+
+#DEBHELPER#
+
+exit 0
+
+# vim: ts=2 sw=2

@@ -1,0 +1,24 @@
+netbeans-installer (8.2~ppa1) yakkety; urgency=medium
+
+  * update to version 8.2 build 201609300101
+  * 
+
+ -- Fabrizio Martinez <WiggyWunka@gmail.com>  Thu, 27 Oct 2016 10:16:38 -0700
+
+netbeans-installer (8.1~ppa1) wily; urgency=medium
+
+  *  update to version 8.1 build 201510222201
+
+ -- Balázs Vajdics <b.vajdics@gmail.com>  Fri, 04 Mar 2016 23:15:42 +0100
+
+netbeans-installer (8.0~ppa2) saucy; urgency=medium
+
+  * fix missing db_purge depencency
+
+ -- Balázs Vajdics <b.vajdics@gmail.com>  Mon, 29 Feb 2016 23:31:19 +0100
+
+netbeans-installer (8.0~ppa1) saucy; urgency=low
+
+  * Initial release.
+
+ -- Balázs Vajdics <b.vajdics@gmail.com>  Sat, 22 Mar 2014 20:40:09 +0100
